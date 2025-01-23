@@ -1,0 +1,72 @@
+@import "assets/sass/variables";
+
+body {
+  font-family: Helvetica, sans-serif;
+  font-size: $font-size-sm;
+  color: $base-font-color;
+  background-color: $bg-color;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  height: 100vh;
+
+  @media (min-width: $tablet-portrait) {
+    font-size: $base-font-size;
+  }
+
+  #content {
+    max-width: 1280px;
+    height: calc(100vh - 48px);
+    margin: 0 $spacing-tablet;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    @media (min-width: $tablet-portrait) {
+      margin: 0 auto;
+    }
+  }
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-size: calc($font-size-xl / 1.5);
+  margin: 0;
+
+  @media (min-width: $tablet-portrait) {
+    font-size: $font-size-xl;
+  }
+}
+
+button {
+  width: 300px;
+  padding: 10px 20px;
+  font-size: $font-size-xs;
+  color: $light;
+  border: 1px solid $border-color;
+  background-color: $accent-color;
+  cursor: pointer;
+
+  @media (min-width: $tablet-portrait) {
+    font-size: $font-size-sm;
+  }
+
+  &:hover,
+  :focus {
+    background-color: lighten($accent-color, 10%);
+  }
+}
+
+* {
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}

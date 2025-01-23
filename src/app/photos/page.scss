@@ -1,0 +1,39 @@
+@import "../assets/sass/variables";
+
+.photos-feed-page {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  gap: $spacing-tablet;
+  padding: 16px 0;
+  max-height: 100%;
+  overflow-y: scroll;
+  scrollbar-width: none;
+
+  @media (min-width: $tablet-portrait) {
+    padding: 48px 0;
+  }
+
+  &__masonry-grid {
+    column-count: 1;
+    column-gap: 16px;
+    height: 100%;
+
+    @media (min-width: $tablet-portrait) {
+      column-count: 2;
+    }
+
+    @media (min-width: $desktop) {
+      column-count: 3;
+    }
+  }
+
+  &__notification {
+    font-size: calc($font-size-xl / 1.5);
+    text-align: center;
+
+    &--error {
+      color: $error;
+    }
+  }
+}

@@ -1,0 +1,41 @@
+@import "../../../assets/sass/variables";
+
+.photo-card {
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  margin-bottom: 16px; /* Space between rows */
+  gap: $spacing-mobile;
+  padding: 16px;
+  border-radius: $border-radius-1;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: $gray-3;
+  cursor: pointer;
+  break-inside: avoid; /* Prevent items from breaking across columns */
+
+  @media (min-width: $tablet-portrait) {
+    gap: $spacing-tablet;
+  }
+
+  &--extended {
+    cursor: unset;
+    margin-bottom: 0;
+
+    @media (min-width: $tablet-portrait) {
+      padding: 36px;
+    }
+  }
+
+    &__photographer {
+      text-transform: capitalize;
+      font-weight: 600;
+      color: $gray-2;
+    }
+
+    &__description {
+      flex: 0 0 calc(100% - 48px);
+      color: $gray-1;
+      line-height: 1.5;
+    }
+
+}

@@ -1,0 +1,21 @@
+@import "../../assets/sass/variables";
+
+.photo-page {
+  display: flex;
+  flex-flow: column;
+  gap: $spacing-tablet;
+  align-items: center;
+
+  &__notification {
+    font-size: calc($font-size-xl / 1.5);
+    text-align: center;
+
+    &--error {
+      color: $error;
+    }
+  }
+
+  &__back-btn-text {
+      text-transform: uppercase;
+  }
+}
