@@ -43,6 +43,11 @@ NEXT_PUBLIC_PEXELS_API_KEY=your.pexels.api.key
 
 - execute `npm run test`
 
+## Application performance tools and metrics:
+
+- change .env var to `NEXT_PUBLIC_ENV === 'dev'` to run web-vitals
+- execute `npm run analyze` to analyze bundle size
+
 ## Git default settings:
 
 - husky - before each commit `prettier` will be run

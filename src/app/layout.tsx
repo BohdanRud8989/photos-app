@@ -1,7 +1,12 @@
 import { ReactNode } from "react";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { Header, ErrorBoundary, ErrorView } from "./components";
+import {
+  Header,
+  ErrorBoundary,
+  ErrorView,
+  WebVitalsListener,
+} from "./components";
 
 import "./globals.scss";
 
@@ -31,6 +36,7 @@ export default function RootLayout({
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <main>
           <ErrorBoundary FallbackComponent={ErrorView}>
+            <WebVitalsListener />
             <Header />
             <section id="content">{children}</section>
           </ErrorBoundary>

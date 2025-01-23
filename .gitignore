@@ -40,6 +40,9 @@ lerna-debug.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# bundle analyzer
+/analyze/
+
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
