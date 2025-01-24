@@ -1,52 +1,51 @@
 import { render, screen } from "@testing-library/react";
 import { expect, test, describe } from "vitest";
+import { ThemeProvider } from "styled-components";
 import Photo from "./Photo";
+import { theme } from "../../../assets/styles/theme";
+
+const mockedPhoto = {
+  photographer: "John Doe",
+  width: 200,
+  height: 250,
+};
+
+const MockThemeProvider = ({ children }: { children: React.ReactNode }) => (
+  <ThemeProvider theme={theme}>{children}</ThemeProvider>
+);
 
 describe("Photo component", () => {
   test("renders Photo with initials", () => {
-    const photographer = "John Doe";
-    const width = 200;
-    const height = 250;
-
-    const { container } = render(
-      <Photo photographer={photographer} width={width} height={height} />,
+    render(
+      <MockThemeProvider>
+        <Photo {...mockedPhoto} />
+      </MockThemeProvider>,
     );
 
     const initials = screen.getByText("JD");
     const image = screen.queryByRole("img");
-    const photoContainer = container.querySelector("photo--maximized");
 
-    expect(photoContainer).toBeNull();
     expect(initials).toBeDefined();
     expect(image).toBeNull();
   });
 
   test("renders Photo with image", () => {
     const url = "https://example.com/avatar.jpg";
-    const photographer = "John Doe";
-    const width = 200;
-    const height = 250;
 
-    const { container } = render(
-      <Photo
-        url={url}
-        photographer={photographer}
-        width={width}
-        height={height}
-        maximized
-      />,
+    render(
+      <MockThemeProvider>
+        <Photo url={url} maximized {...mockedPhoto} />
+      </MockThemeProvider>,
     );
 
     const image = screen.getByRole("img");
     const initials = screen.queryByText("JD");
-    const photoContainer = container.querySelector("photo--maximized");
 
-    expect(photoContainer).toBeDefined();
     expect(image).toBeDefined();
     expect(image.src).toContain("example.com");
-    expect(image.alt).toBe(`${photographer}'s photo`);
-    expect(image.width).toBe(width);
-    expect(image.height).toBe(height);
+    expect(image.alt).toBe(`${mockedPhoto.photographer}'s photo`);
+    expect(image.width).toBe(mockedPhoto.width);
+    expect(image.height).toBe(mockedPhoto.height);
     expect(initials).toBeNull();
   });
 });

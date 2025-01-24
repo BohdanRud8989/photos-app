@@ -1,15 +1,35 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import styled, { css } from "styled-components";
 import { PhotoCard } from "../../components";
 import { usePexelsPhoto } from "../../hooks";
 import { MEDIUM_SIZE_IMG_SCALE_FACTOR } from "../../utils";
 
-import "./page.scss";
-
 type PhotoProps = {
   params: { id: number };
 };
+
+const PhotoSection = styled.section`
+  display: flex;
+  flex-flow: column;
+  gap: ${({ theme }) => theme.spacings.tablet};
+  align-items: center;
+`;
+const notificationStyles = css`
+  font-size: calc(${({ theme }) => theme.fontSizes.xl} / 1.5);
+  text-align: center;
+`;
+const Notification = styled.h6`
+  ${notificationStyles}
+`;
+const NotificationError = styled.h6`
+  ${notificationStyles}
+  color: ${({ theme }) => theme.colors.error};
+`;
+const BackButtonText = styled.span`
+  text-transform: uppercase;
+`;
 
 /**
  * Photo Details Page
@@ -24,37 +44,29 @@ const Photo = ({ params: { id } }: PhotoProps) => {
   };
 
   if (isLoading) {
-    return (
-      <h6 className="photo-page__notification">
-        Please wait, photo is being loaded...
-      </h6>
-    );
+    return <Notification>Please wait, photo is being loaded...</Notification>;
   }
   if (error) {
-    return (
-      <h6 className="photo-page__notification photo-page__notification--error">
-        Failed to load photo: {error}
-      </h6>
-    );
+    return <NotificationError>Failed to load photo: {error}</NotificationError>;
   }
 
   return (
-    <section className="photo-page">
+    <PhotoSection>
       {photo !== undefined && (
         <>
           <PhotoCard
             {...photo}
             url={photo.src.medium}
-            width={photo.width / 5}
+            width={photo.width / MEDIUM_SIZE_IMG_SCALE_FACTOR}
             height={photo.height / MEDIUM_SIZE_IMG_SCALE_FACTOR}
             extended
           />
           <button onClick={handleRedirectBack}>
-            <span className="photo-page__back-btn-text">Back</span>
+            <BackButtonText>Back</BackButtonText>
           </button>
         </>
       )}
-    </section>
+    </PhotoSection>
   );
 };
 

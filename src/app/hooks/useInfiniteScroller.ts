@@ -30,7 +30,7 @@ export function useInfiniteScroller({
 }: InfiniteScrollerProps) {
   const [page, setPage] = useState<number>(DEFAULT_PAGE);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const loaderRef = useRef<HTMLSpanElement | null>(null);
+  const loaderRef = useRef<HTMLHeadingElement | null>(null);
   const timeoutRef = useRef<NodeJS.Timeout>();
 
   useEffect(() => {

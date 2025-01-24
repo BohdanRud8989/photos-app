@@ -1,13 +1,51 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import styled, { css } from "styled-components";
 import { PhotoCard } from "../components";
 import { useInfiniteScroller, usePexelsPhotos } from "../hooks";
 import { DEFAULT_PAGE, keyMaker, SMALL_SIZE_IMG_SCALE_FACTOR } from "../utils";
 
-import "./page.scss";
-
 const PHOTO_PREFIX = "PHOTO";
+
+const PhotosSection = styled.section`
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  gap: ${({ theme }) => theme.spacings.tablet};
+  padding: 16px 0;
+  max-height: 100%;
+  overflow-y: scroll;
+  scrollbar-width: none;
+
+  @media (min-width: ${({ theme }) => theme.mediaQueries.tabletPortrait}) {
+    padding: 48px 0;
+  }
+`;
+const MasonryGrid = styled.div`
+  column-count: 1;
+  column-gap: 16px;
+  height: 100%;
+
+  @media (min-width: ${({ theme }) => theme.mediaQueries.tabletPortrait}) {
+    column-count: 2;
+  }
+
+  @media (min-width: ${({ theme }) => theme.mediaQueries.desktop}) {
+    column-count: 3;
+  }
+`;
+const notificationStyles = css`
+  font-size: calc(${({ theme }) => theme.fontSizes.xl} / 1.5);
+  text-align: center;
+`;
+const Notification = styled.h6`
+  ${notificationStyles}
+`;
+const NotificationError = styled.h6`
+  ${notificationStyles}
+  color: ${({ theme }) => theme.colors.error};
+`;
 
 /**
  * Photos Page with infinite scroller
@@ -49,30 +87,24 @@ const PhotosPage = () => {
   }, [fetchPhotos]);
 
   if (areFirstPhotosLoading) {
-    return (
-      <h6 className="photos-feed-page__notification">
-        Please wait, feed is being loaded...
-      </h6>
-    );
+    return <Notification>Please wait, feed is being loaded...</Notification>;
   }
   if (error) {
     return (
-      <h6 className="photos-feed-page__notification photos-feed-page__notification--error">
-        Failed to load the feed: {error}
-      </h6>
+      <NotificationError>Failed to load the feed: {error}</NotificationError>
     );
   }
   if (photos.length === 0) {
     return (
-      <h6 className="photos-feed-page__notification">
+      <Notification>
         Your feed is empty. New interesting content is coming!
-      </h6>
+      </Notification>
     );
   }
 
   return (
-    <div className="photos-feed-page" ref={containerRef}>
-      <section className="photos-feed-page__masonry-grid">
+    <PhotosSection ref={containerRef}>
+      <MasonryGrid>
         {photos.map(({ src, width, height, ...rest }) => (
           <PhotoCard
             key={photoKeyGenerator.next().value}
@@ -82,13 +114,9 @@ const PhotosPage = () => {
             url={src.tiny}
           />
         ))}
-      </section>
-      {hasMorePhotos && (
-        <span className="photos-feed-page__notification" ref={loaderRef}>
-          Loading...
-        </span>
-      )}
-    </div>
+      </MasonryGrid>
+      {hasMorePhotos && <Notification ref={loaderRef}>Loading...</Notification>}
+    </PhotosSection>
   );
 };
 

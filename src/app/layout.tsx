@@ -1,14 +1,13 @@
 import { ReactNode } from "react";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import StyledComponentsRegistry from "./registry";
 import {
   Header,
   ErrorBoundary,
   ErrorView,
   WebVitalsListener,
 } from "./components";
-
-import "./globals.scss";
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -35,11 +34,13 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable}`}>
         <main>
-          <ErrorBoundary FallbackComponent={ErrorView}>
-            <WebVitalsListener />
-            <Header />
-            <section id="content">{children}</section>
-          </ErrorBoundary>
+          <WebVitalsListener />
+          <StyledComponentsRegistry>
+            <ErrorBoundary FallbackComponent={ErrorView}>
+              <Header />
+              <section id="content">{children}</section>
+            </ErrorBoundary>
+          </StyledComponentsRegistry>
         </main>
       </body>
     </html>

@@ -1,6 +1,7 @@
 "use client";
 
 import { useReportWebVitals } from "next/web-vitals";
+import { app } from "../../../config";
 
 /**
  * Monitor web vitals globally
@@ -8,7 +9,7 @@ import { useReportWebVitals } from "next/web-vitals";
  */
 export default function WebVitalsListener() {
   useReportWebVitals((metric) => {
-    if (process.env.NEXT_PUBLIC_ENV === "dev") {
+    if (app.isDevEnv) {
       console.log("Web-vitals metric: ", metric);
     }
   });

@@ -10,8 +10,7 @@ Technologies Used:
 - Next.js (App router mode)
 - TypeScript
 - Pexels - as API provider
-- sass
-- cx - classnames library(to display class list depending on conditions)
+- styled-components - CSS-in-JS library
 - vitest - testing framework
 
 ## Initial setup
@@ -45,8 +44,10 @@ NEXT_PUBLIC_PEXELS_API_KEY=your.pexels.api.key
 
 ## Application performance tools and metrics:
 
-- change .env var to `NEXT_PUBLIC_ENV === 'dev'` to run web-vitals
+- change .env.development var to `NEXT_PUBLIC_ENV === 'dev'` to run web-vitals
 - execute `npm run analyze` to analyze bundle size
+- run Chrome -> Lighthouse page analyzer
+- open Chrome -> More Tools -> Performance Monitor
 
 ## Git default settings:
 

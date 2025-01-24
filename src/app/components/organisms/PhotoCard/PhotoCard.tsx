@@ -1,21 +1,60 @@
 "use client";
 
-import cx from "classnames";
 import { useRouter } from "next/navigation";
 import type { Photo as PexelsPhoto } from "pexels";
+import styled from "styled-components";
 import { Photo } from "../../atoms";
 
-import "./photoCard.scss";
-
 type PhotoCardProps = {
-  className?: string;
   extended?: boolean;
   url?: string;
 } & Omit<PexelsPhoto, "src">;
 
+const PhotoCardContainer = styled.article.withConfig({
+  shouldForwardProp: (prop) => prop !== "extended",
+})<{ extended?: boolean }>`
+  display: flex;
+  flex-flow: column;
+  align-items: center;
+  margin-bottom: 16px;
+  gap: ${({ theme }) => theme.spacings.mobile};
+  padding: 16px;
+  border-radius: ${({ theme }) => theme.borders["radius-1"]};
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  background-color: ${({ theme }) => theme.colors["gray-3"]};
+  cursor: pointer;
+  break-inside: avoid;
+
+  @media (min-width: ${({ theme }) => theme.mediaQueries.tabletPortrait}) {
+    gap: ${({ theme }) => theme.spacings.tablet};
+  }
+
+  ${({ extended, theme }) =>
+    extended &&
+    `
+    cursor: unset;
+    margin-bottom: 0;
+
+    @media (min-width: ${theme.mediaQueries.tabletPortrait}) {
+      padding: 36px;
+    }
+    `}
+`;
+
+const Photographer = styled.span`
+  text-transform: capitalize;
+  font-weight: 600;
+  color: ${({ theme }) => theme.colors["gray-2"]};
+`;
+
+const Description = styled.p`
+  flex: 0 0 calc(100% - 48px);
+  color: ${({ theme }) => theme.colors["gray-1"]};
+  line-height: 1.5;
+`;
+
 /**
  * Photo card - displays photo along with info
- * @param {string} className - alternative css class name of the main container
  * @param {number} id - Photo's id
  * @param {string} url - Photo's url
  * @param {string} photographer - Photographer's name
@@ -26,7 +65,6 @@ type PhotoCardProps = {
  * @returns {JSX.Element}
  */
 const PhotoCard = ({
-  className,
   id,
   url,
   photographer,
@@ -42,12 +80,8 @@ const PhotoCard = ({
   };
 
   return (
-    <article
-      className={cx(
-        "photo-card",
-        { "photo-card--extended": extended },
-        className,
-      )}
+    <PhotoCardContainer
+      extended={extended}
       onClick={handleRedirectToPhotoDetailsPage}
       data-testid="photo-card-test-id"
     >
@@ -60,11 +94,11 @@ const PhotoCard = ({
       />
       {extended && (
         <>
-          <span className="photo-card__photographer">{photographer}</span>
-          <p className="photo-card__description">{description}</p>
+          <Photographer>{photographer}</Photographer>
+          <Description>{description}</Description>
         </>
       )}
-    </article>
+    </PhotoCardContainer>
   );
 };
 

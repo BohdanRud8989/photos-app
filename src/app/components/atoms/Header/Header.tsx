@@ -1,14 +1,30 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
+import styled from "styled-components";
 
-import "./header.scss";
+const StyledHeader = styled.header`
+  position: sticky;
+  display: flex;
+  flex-flow: row wrap;
+  justify-content: space-between;
+  align-items: center;
+  height: 48px;
+  padding: 8px 16px;
+  background-color: rgb(31, 31, 31);
+`;
+const UserSetting = styled(Link)`
+  font-weight: 600;
+  color: gray;
+`;
 
 /**
  * Main app's Header
  * @returns {JSX.Element}
  */
 const Header = () => (
-  <header className="header">
+  <StyledHeader>
     <Link href="/">
       <Image
         src="/icons/icon-48x48.png"
@@ -18,10 +34,8 @@ const Header = () => (
         priority
       />
     </Link>
-    <Link className="header__user-setting" href="/settings">
-      User setting
-    </Link>
-  </header>
+    <UserSetting href="/settings">User setting</UserSetting>
+  </StyledHeader>
 );
 
 export default Header;

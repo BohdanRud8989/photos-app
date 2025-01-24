@@ -1,9 +1,9 @@
-import { memo } from "react";
-import cx from "classnames";
-import Image from "next/image";
-import { imageLoader } from "../../../utils";
+"use client";
 
-import "./photo.scss";
+import { memo } from "react";
+import Image from "next/image";
+import styled from "styled-components";
+import { imageLoader } from "../../../utils";
 
 type PhotoProps = {
   url?: string;
@@ -12,6 +12,36 @@ type PhotoProps = {
   height: number;
   maximized?: boolean;
 };
+const PhotoContainer = styled.article.withConfig({
+  shouldForwardProp: (prop) => prop !== "maximized",
+})<{ maximized?: boolean }>`
+  width: 300px;
+  max-height: 400px;
+  overflow: hidden;
+
+  ${({ maximized }) =>
+    maximized &&
+    `
+      width: unset;
+    `}
+`;
+
+const StyledImage = styled(Image)`
+  object-fit: cover;
+  width: 100%;
+  display: block;
+`;
+
+const PhotoInitials = styled.div`
+  display: flex;
+  border: 1px solid ${({ theme }) => theme.colors["gray-2"]};
+  border-radius: 15px;
+  background-color: ${({ theme }) => theme.colors["gray-2"]};
+  padding: 3px 2px;
+  font-size: ${({ theme }) => theme.fontSizes.sm};
+  color: ${({ theme }) => theme.colors["gray-3"]};
+`;
+
 /**
  * Photo - displays photo if provided otherwise photographer's name initials
  * @param {string} url - Photo's url
@@ -28,10 +58,9 @@ const Photo = memo(
       .reduce((acc, partOfName) => acc + partOfName[0], "");
 
     return (
-      <div className={cx("photo", { "photo--maximized": maximized })}>
+      <PhotoContainer {...(maximized ? { maximized } : {})}>
         {url ? (
-          <Image
-            className="photo__image"
+          <StyledImage
             src={url}
             alt={`${photographer}'s photo`}
             width={width}
@@ -41,9 +70,9 @@ const Photo = memo(
             priority
           />
         ) : (
-          <div className="photo__initials">{initials}</div>
+          <PhotoInitials>{initials}</PhotoInitials>
         )}
-      </div>
+      </PhotoContainer>
     );
   },
 );

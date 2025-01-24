@@ -1,7 +1,9 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { expect, test, describe, vi } from "vitest";
 import type { Photo as PexelsPhoto } from "pexels";
+import { ThemeProvider } from "styled-components";
 import PhotoCard from "./PhotoCard";
+import { theme } from "../../../assets/styles/theme";
 
 type PartializedPexelsPhoto = Partial<
   Omit<PexelsPhoto, "src"> & { url?: string }
@@ -24,9 +26,17 @@ vi.mock("next/navigation", () => ({
   })),
 }));
 
+const MockThemeProvider = ({ children }: { children: React.ReactNode }) => (
+  <ThemeProvider theme={theme}>{children}</ThemeProvider>
+);
+
 describe("PhotoCard component", () => {
   test("renders PhotoCard with just image(Extended view mode is false)", () => {
-    render(<PhotoCard {...mockedPhoto} />);
+    render(
+      <MockThemeProvider>
+        <PhotoCard {...mockedPhoto} />
+      </MockThemeProvider>,
+    );
 
     const imageElement = screen.getByRole("img");
     const photographerElement = screen.queryByText(mockedPhoto.photographer);
@@ -39,21 +49,27 @@ describe("PhotoCard component", () => {
   });
 
   test("renders PhotoCard in extended mode(with additional info)", () => {
-    const { container } = render(<PhotoCard {...mockedPhoto} extended />);
+    render(
+      <MockThemeProvider>
+        <PhotoCard {...mockedPhoto} extended />
+      </MockThemeProvider>,
+    );
 
-    const photoCardContainer = container.querySelector("photo-card--extended");
     const imageElement = screen.getByRole("img");
     const photographerElement = screen.getByText(mockedPhoto.photographer);
     const descriptionElement = screen.getByText(mockedPhoto.alt);
 
-    expect(photoCardContainer).toBeDefined();
     expect(imageElement).toBeDefined();
     expect(photographerElement).toBeDefined();
     expect(descriptionElement).toBeDefined();
   });
 
   test("clicking on PhotoCard should lead to Photo details page", async () => {
-    render(<PhotoCard {...mockedPhoto} />);
+    render(
+      <MockThemeProvider>
+        <PhotoCard {...mockedPhoto} />
+      </MockThemeProvider>,
+    );
 
     const photoCard = screen.getAllByTestId("photo-card-test-id");
 
